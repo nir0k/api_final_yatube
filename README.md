@@ -1,104 +1,85 @@
-# api_final
+# api_final_yatube
 
-## Описание. 
+## Choose Your Language
 
-Социальная сеть для писателей, желающих поделиться своим оригинальнным контентом. 
-Возможности:
-- Размещение постов
-- Группы
-- Комментарии
-- Подписка
-- Авторизация
-- RestAPI
+- [English](README.md)
+- [Русский](README.ru.md)
 
-## Установка
+---
 
-Клонировать репозиторий и перейти в него в командной строке:
+## Description
 
-```
-git clone git@github.com:nir0k/api_final_yatube.git
-```
+Backend server for a social network for writers wishing to share their original content. REST API features include:
 
-```
-cd api_final_yatube
-```
+- **Posts:** Create, edit, update, and delete.
+- **Comments:** Fetch, update, and delete.
+- **Groups:** Participation and management.
+- **Followings:** Follow users.
+- **Authorization:** JWT authorization support.
 
-Cоздать и активировать виртуальное окружение:
+## Installation
 
-```
-python3 -m venv env
-```
+1. **Clone the repository:**
+    ```sh
+    git clone git@github.com:nir0k/api_final_yatube.git
+    cd api_final_yatube
+    ```
+2. **Create and activate a virtual environment:**
+    ```sh
+    python3 -m venv env
+    source env/bin/activate
+    ```
+3. **Install dependencies:**
+    ```sh
+    python3 -m pip install --upgrade pip
+    pip install -r requirements.txt
+    ```
+4. **Apply migrations:**
+    ```sh
+    cd yatube_api
+    python3 manage.py migrate
+    ```
+5. **Start the project:**
+    ```sh
+    python3 manage.py runserver
+    ```
 
-```
-source env/bin/activate
-```
+## API Examples
 
-```
-python3 -m pip install --upgrade pip
-```
+- **Obtaining JWT Token:** `POST http://127.0.0.1:8000/api/v1/jwt/create/`
 
-Установить зависимости из файла requirements.txt:
+    Payload:
+    ```json
+    {
+    "username": "string",
+    "password": "string"
+    }
+    ```
+- **Fetching posts**: GET http://127.0.0.1:8000/api/v1/posts/
 
-```
-pip install -r requirements.txt
-```
+- **Filtering posts**: GET http://127.0.0.1:8000/api/v1/posts/?limit=2&offset=4
+    - `limit` - number of posts to fetch.
+    - `offset` - which post to start from.
 
-Выполнить миграции:
+- Fetching a single post: GET http://127.0.0.1:8000/api/v1/posts/{ID}/
 
-```
-python3 manage.py migrate
-```
+- Creating a post: POST http://127.0.0.1:8000/api/v1/posts/
 
-Запустить проект:
+    Anonymous requests are not allowed.
+    ```json
+    {
+    "text": "string",
+    "image": "string",
+    "group": 0
+    }
+    ```
 
-```
-python3 manage.py runserver
-```
+- **Fetching a list of groups**: GET http://127.0.0.1:8000/api/v1/groups/
 
-# Примеры API
+- **Fetching followings**: GET http://127.0.0.1:8000/api/v1/follow/
 
-[Доступ к нолному описанию API] (http://127.0.0.1:8000/redoc/)
+    Returns all followings of the user making the request. Anonymous requests are not allowed.
 
-- Получение JWT-tokena:
-http://127.0.0.1:8000/api/v1/jwt/create/
+- **Searching for a following**: GET http://127.0.0.1:8000/api/v1/follow/?search="{username}"
 
-Playload:
-```JSON
-{
-"username": "string",
-"password": "string"
-}
-```
-- Получение публикаций:
-http://127.0.0.1:8000/api/v1/posts/
-
-- Получение публикаций с фильтрацией:
-http://127.0.0.1:8000/api/v1/posts/?limit=2&offset=4
-
-limit - количесвто публикаций
-offset - с какой публикации начать выдачу
-
-- Получение одного поста:
-http://127.0.0.1:8000/api/v1/posts/{ID}/
-
-- Создание публикации:
-http://127.0.0.1:8000/api/v1/posts/
-Добавление новой публикации в коллекцию публикаций. Анонимные запросы запрещены
- ```JSON
-{
-"text": "string",
-"image": "string",
-"group": 0
-}
- ```
-
-- Получение списка групп:
-Получение списка доступных сообществ.
-http://127.0.0.1:8000/api/v1/groups/
-
-- Получение подписок
-Возвращает все подписки пользователя, сделавшего запрос. Анонимные запросы запрещены.
-http://127.0.0.1:8000/api/v1/follow/
-
-- Поиск подписки
-http://127.0.0.1:8000/api/v1/follow/?search="{username}"
+**Full API Description** : http://127.0.0.1:8000/redoc/
